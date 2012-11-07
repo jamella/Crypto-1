@@ -76,15 +76,15 @@ public class Main {
 //			} catch (Exception e) {}
 //		}
 			
-			BigInteger e = new BigInteger(readFromFile("data/e1.bin"));
-			BigInteger n = new BigInteger(readFromFile("data/n1.bin"));
+			BigInteger e = new BigInteger(readFromFile("data/e13.bin"));
+			BigInteger n = new BigInteger(readFromFile("data/n13.bin"));
 			System.out.println("e = " + e.toString());
 			System.out.println("n = " + n.toString());
 			PublicKey key = new PublicKey(n, e);
 			
 			Wiener Mallory = new Wiener();
 			Mallory.attack(key);
-			Mallory.printResult();
+			Mallory.printResult();					
 			
 //			PrivateKey privateKey = Mallory.getResult();			
 //			byte[] plainText = readFromFile("data.any");

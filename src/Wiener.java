@@ -87,7 +87,7 @@ public class Wiener {
 				// ((p+q)/2)^2 - pq = ((p-q)/2)^2
 				//
 				// We estimate e/n = k/(dg)
-				// Guess of k and dg based on q[i]
+				// Guess of k and dg based on continued fraction q[i]
 				if(i == 0) {
 					// k[0] = q[0]
 					k.add(q.get(0));
@@ -99,26 +99,15 @@ public class Wiener {
 					// dg[1] = q[1]
 					dg.add(q.get(1));
 				} else {
-//					if(i % 2 == 1) {
-//						// k[i] = q[i]*k[i-1] + k[i-2]
-//						k.add(q.get(i).multiply(k.get(i-1)).add(k.get(i-2)));
-//						// dg[i] = q[i]*dg[i-1] + dg[i-2]
-//						dg.add(q.get(i).multiply(dg.get(i-1)).add(dg.get(i-2)));
-//					} else if(i % 2 == 0) {
-//						// k[i] = (q[i]+1)*k[i-1] + k[i-2]
-//						k.add(q.get(i).add(one).multiply(k.get(i-1)).add(k.get(i-2)));
-//						// dg[i] = (q[i]+1)*dg[i-1] + dg[i-2]
-//						dg.add(q.get(i).add(one).multiply(dg.get(i-1)).add(dg.get(i-2)));
-//					}
 					// k[i] = q[i]*k[i-1] + k[i-2]
 					k.add(q.get(i).multiply(k.get(i-1)).add(k.get(i-2)));
 					// dg[i] = q[i]*dg[i-1] + dg[i-2]
 					dg.add(q.get(i).multiply(dg.get(i-1)).add(dg.get(i-2)));
 				}
 				
-//				BigInteger[] result = reconstructFraction(q);
-//				k.add(result[0]);
-//				dg.add(result[1]);
+//				BigInteger[] k_divide_dg = reconstructFraction(q);
+//				k.add(k_divide_dg[0]);
+//				dg.add(k_divide_dg[1]);
 				
 				BigInteger k_i, dg_i;
 				dg_i = dg.get(i);
@@ -181,6 +170,9 @@ public class Wiener {
 		
 	}
 	
+	/*
+	 * Reconstruct the continued fraction n[i]/d[i] from <q[0],q[1],...,q[i]>
+	 */
 	public BigInteger[] reconstructFraction(LinkedList<BigInteger> q) {
 		BigInteger[] result = new BigInteger[2];
 		BigInteger n_i = zero;
@@ -246,13 +238,5 @@ public class Wiener {
 		}
 		return a.subtract(one);
 	}
-	
-	public LinkedList<BigInteger> findFraction(BigInteger nominator, BigInteger denominator) {
-		LinkedList<BigInteger> fraction = new LinkedList<BigInteger>();
-		BigInteger n = nominator;
-		BigInteger d = denominator;
-		BigInteger q_i = zero;
-		
-		return fraction;
-	}
+
 }
