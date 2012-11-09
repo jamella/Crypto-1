@@ -5,8 +5,6 @@
 
 import java.io.*;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
 			
@@ -76,8 +74,8 @@ public class Main {
 //			} catch (Exception e) {}
 //		}
 			
-			BigInteger e = new BigInteger(readFromFile("data/e13.bin"));
-			BigInteger n = new BigInteger(readFromFile("data/n13.bin"));
+			BigInteger e = new BigInteger(readFromFile("data/e1.bin"));
+			BigInteger n = new BigInteger(readFromFile("data/n1.bin"));
 			System.out.println("e = " + e.toString());
 			System.out.println("n = " + n.toString());
 			PublicKey key = new PublicKey(n, e);
@@ -86,11 +84,11 @@ public class Main {
 			Mallory.attack(key);
 			Mallory.printResult();					
 			
-//			PrivateKey privateKey = Mallory.getResult();			
-//			byte[] plainText = readFromFile("data.any");
-//			RSA Alice = new RSA(privateKey);
-//			byte[] signature = Alice.sign(plainText);
-//			writeToFile("data.sign", signature);
+			PrivateKey pk = Mallory.getResult();			
+			byte[] plainText = readFromFile("data/data.any");
+			RSA Alice = new RSA(pk);
+			byte[] signature = Alice.sign(plainText);
+			writeToFile("output/data.sign", signature);
 		} catch (Exception e) {
 			e.getMessage();
 			e.printStackTrace();

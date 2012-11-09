@@ -1,6 +1,5 @@
 import java.math.*;
 import java.util.LinkedList;
-import java.util.List;
 
 
 public class Wiener {
@@ -46,7 +45,7 @@ public class Wiener {
 		BigInteger n = key.n;
 		
 		check(key);
-		BigInteger max_d = sqrt(sqrt(n)).divide(new BigInteger("3"));
+//		BigInteger max_d = sqrt(sqrt(n)).divide(new BigInteger("3"));
 		try {
 			LinkedList<BigInteger> q = new LinkedList<BigInteger>();
 			LinkedList<Double> r = new LinkedList<Double>();
