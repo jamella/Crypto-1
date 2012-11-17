@@ -40,7 +40,7 @@ public class Wiener {
 			System.out.println("e > n^(1.5) -> this is not guaranteed to work");
 	}
 	
-	public boolean attack(PublicKey key) {				
+	public boolean attack(PublicKey key) {
 		BigInteger temp, x, y;
 		BigInteger q_0, q_i, d_i, d_i_1, d_i_2, n_i, n_i_1, n_i_2, n_1, n_0, d_1, d_0;
 		BigInteger guess_d, guess_k, guess_dg, phi_n;
@@ -48,98 +48,98 @@ public class Wiener {
 		
 		BigInteger e = key.e;
 		BigInteger n = key.n;
-        x = e;
-        y = n;
-        
-        // i = 0
-        // q[0] = [e/n]
-        // n[0] = q[0]
-        // d[0] = 1
-        q_0 = x.divide(y);
-        n_0 = q_0;
-        d_0 = BigInteger.ONE;        
+		x = e;
+		y = n;
+		
+		// i = 0
+		// q[0] = [e/n]
+		// n[0] = q[0]
+		// d[0] = 1
+		q_0 = x.divide(y);
+		n_0 = q_0;
+		d_0 = BigInteger.ONE;        
 
-        temp = x;
-        x = y;
-        y = temp.add((y.multiply(q_0)).negate());
-        
-        // i = 1
-        // q[1] = [n / (e - n * [e/n])]
-        // n[1] = q[0] * q[1] + 1
-        // d[1] = q[1]
-        q_i = x.divide(y);
-        n_1 = q_0.multiply(q_i).add(BigInteger.ONE);
-        n_i = n_1;
-        d_1 = q_i;
-        d_i = d_1;        
-        
-        // i = 2
-        d_i_2 = d_0;
-        d_i_1 = d_1;
-        d_i = d_i_1;
-        
-        n_i_2 = n_0;
-        n_i_1 = n_1;
-        n_i = n_i_1;
+		temp = x;
+		x = y;
+		y = temp.add((y.multiply(q_0)).negate());
+		
+		// i = 1
+		// q[1] = [n / (e - n * [e/n])]
+		// n[1] = q[0] * q[1] + 1
+		// d[1] = q[1]
+		q_i = x.divide(y);
+		n_1 = q_0.multiply(q_i).add(BigInteger.ONE);
+		n_i = n_1;
+		d_1 = q_i;
+		d_i = d_1;
+		
+		// i = 2
+		d_i_2 = d_0;
+		d_i_1 = d_1;
+		d_i = d_i_1;
+		
+		n_i_2 = n_0;
+		n_i_1 = n_1;
+		n_i = n_i_1;
 
-        int i = 1;
-        while(x.add((y.multiply(q_i)).negate()).signum() != 0) {
-            System.out.println("q[" + i + "] = " + q_i);
-            System.out.println("n[" + i + "] = " + n_i);
-            System.out.println("d[" + i + "] = " + d_i);
-            i++;
+		int i = 1;
+		while(x.add((y.multiply(q_i)).negate()).signum() != 0) {
+			System.out.println("q[" + i + "] = " + q_i);
+			System.out.println("n[" + i + "] = " + n_i);
+			System.out.println("d[" + i + "] = " + d_i);
+			i++;
 
-            temp = x;
-            x = y;
-            y = temp.add((y.multiply(q_i)).negate());
+			temp = x;
+			x = y;
+			y = temp.add((y.multiply(q_i)).negate());
 
-            q_i = x.divide(y);
-            
-            // d[i] = q[i] * d[i-1] + d[i-2]
-            // n[i] = q[i] * n[i-1] + n[i-2]
-            d_i = q_i.multiply(d_i_1).add(d_i_2);
-            n_i = q_i.multiply(n_i_1).add(n_i_2);
-            
-            d_i_2 = d_i_1;
-            d_i_1 = d_i;
-            n_i_2 = n_i_1;
-            n_i_1 = n_i;
+			q_i = x.divide(y);
+			
+			// d[i] = q[i] * d[i-1] + d[i-2]
+			// n[i] = q[i] * n[i-1] + n[i-2]
+			d_i = q_i.multiply(d_i_1).add(d_i_2);
+			n_i = q_i.multiply(n_i_1).add(n_i_2);
+			
+			d_i_2 = d_i_1;
+			d_i_1 = d_i;
+			n_i_2 = n_i_1;
+			n_i_1 = n_i;
 
-            if(i % 2 == 0){
-            	// k / dg = <q[0],...,q[i-1],q[i]+1> 
-            	// k = (q[i] + 1) * n[i-1] + n[i-2]
-                guess_k = n_i_1.add(n_i_2);
-                // dg = (q[i] + 1) * d[i-1] + d[i-2]
-                guess_dg = d_i_1.add(d_i_2);
-            } else {
-            	// k / dg = <q[0],...,q[i-1],q[i]> 
-            	// k = q[i] * n[i-1] + n[i-2]
-            	guess_k = n_i_1;
-            	// dg = q[i] * d[i-1] + d[i-2]
-            	guess_dg = d_i_1;
-            }
-            
-            // phi(n) = (edg) / k
-            phi_n = e.multiply(guess_dg).divide(guess_k);
-            
-            // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
+			if(i % 2 == 0){
+				// k / dg = <q[0],...,q[i-1],q[i]+1> 
+				// k = (q[i] + 1) * n[i-1] + n[i-2]
+				guess_k = n_i_1.add(n_i_2);
+				// dg = (q[i] + 1) * d[i-1] + d[i-2]
+				guess_dg = d_i_1.add(d_i_2);
+			} else {
+				// k / dg = <q[0],...,q[i-1],q[i]> 
+				// k = q[i] * n[i-1] + n[i-2]
+				guess_k = n_i_1;
+				// dg = q[i] * d[i-1] + d[i-2]
+				guess_dg = d_i_1;
+			}
+			
+			// phi(n) = (edg) / k
+			phi_n = e.multiply(guess_dg).divide(guess_k);
+			
+			// (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
 			p_plus_q_div_2 = n.subtract(phi_n).add(one).divide(two);
-            
-            if(isSquare(p_plus_q_div_2.pow(2).subtract(n))){
-            	// ((p-q)/2)^2 = ((p+q)/2)^2 - pq
-    			p_minus_q_div_2 = sqrt(p_plus_q_div_2.pow(2).subtract(n));
-            	// d = (dg / g) = dg / (edg mod k)
-                guess_d = (guess_dg.divide(e.multiply(guess_dg).mod(guess_k)));                
-                // (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
+			
+			if(isSquare(p_plus_q_div_2.pow(2).subtract(n))){
+				// ((p-q)/2)^2 = ((p+q)/2)^2 - pq
+				p_minus_q_div_2 = sqrt(p_plus_q_div_2.pow(2).subtract(n));
+				// d = (dg / g) = dg / (edg mod k)
+				guess_d = (guess_dg.divide(e.multiply(guess_dg).mod(guess_k)));                
+				// (p+q)/2 = (pq - (p-1)*(q-1) + 1)/2
 				BigInteger guess_p = p_plus_q_div_2.add(p_minus_q_div_2);
 				// q = (p+q)/2 - (p-q)/2
 				BigInteger guess_q = p_plus_q_div_2.subtract(p_minus_q_div_2);
-                this._result = new WienerResult(guess_d, guess_p, guess_q, true);
+				this._result = new WienerResult(guess_d, guess_p, guess_q, true);
 				System.out.println("Success");
-                return true;
-            }
-        }
-        return false;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public PrivateKey getResult() {
