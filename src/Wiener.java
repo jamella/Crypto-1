@@ -1,7 +1,6 @@
 import java.math.*;
 import java.util.LinkedList;
 
-
 public class Wiener {
 	
 	class WienerResult {
@@ -25,7 +24,7 @@ public class Wiener {
 	public final static BigInteger zero = BigInteger.ZERO;
 	public final static BigInteger one = BigInteger.ONE;
 	public final static BigInteger two = new BigInteger("2");
-public final static BigInteger three = new BigInteger("3");
+	public final static BigInteger three = new BigInteger("3");
 	
 	private WienerResult _result;
 	
@@ -41,7 +40,7 @@ public final static BigInteger three = new BigInteger("3");
 			System.out.println("e > n^(1.5) -> this is not guaranteed to work");
 	}
 	
-		public boolean attack(PublicKey key) {				
+	public boolean attack(PublicKey key) {				
 		BigInteger temp, x, y;
 		BigInteger q_0, q_i, d_i, d_i_1, d_i_2, n_i, n_i_1, n_i_2, n_1, n_0, d_1, d_0;
 		BigInteger guess_d, guess_k, guess_dg, phi_n;
