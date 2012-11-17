@@ -40,40 +40,15 @@ public class Main {
 		}
 	}
 	
+	public static void getSignature(String inputFile, String outputFile, PrivateKey pk) {		
+		byte[] plainText = readFromFile(inputFile);
+		RSA rsa = new RSA(pk);
+		byte[] signature = rsa.sign(plainText);
+		writeToFile(outputFile, signature);
+	}
+	
 	public static void main(String[] args) {
 		try {
-//			BigInteger e = new BigInteger("2621");
-////			BigInteger e = new BigInteger("17993");
-//			BigInteger n = new BigInteger("8927");
-////			BigInteger n = new BigInteger("90581");
-//			System.out.println("e = " + e.toString());
-//			System.out.println("n = " + n.toString());
-//			PublicKey key = new PublicKey(n, e);
-//			
-//			Wiener Mallory = new Wiener();
-//			Mallory.attack(key);
-//			Mallory.printResult();
-
-//		Map<String, String> keyPair = new HashMap<String, String>();
-//		keyPair.put("esmart.bin", "Nsmart.bin");
-//		for(int i = 1; i < 14; i++) {
-//			keyPair.put("e" + i + ".bin", "n" + i + ".bin");
-//		}
-//		
-//		for(Map.Entry<String, String> entry : keyPair.entrySet()) {
-//			try {
-//				BigInteger e = new BigInteger(readFromFile(entry.getKey()));
-//				BigInteger n = new BigInteger(readFromFile(entry.getValue()));
-//				System.out.println("e = " + e.toString());
-//				System.out.println("n = " + n.toString());
-//				PublicKey key = new PublicKey(n, e);
-//				
-//				Wiener Mallory = new Wiener();
-//				Mallory.attack(key);
-//				Mallory.printResult();
-//			} catch (Exception e) {}
-//		}
-			
 			BigInteger e = new BigInteger(readFromFile("data/e1.bin"));
 			BigInteger n = new BigInteger(readFromFile("data/n1.bin"));
 			System.out.println("e = " + e.toString());
@@ -84,11 +59,7 @@ public class Main {
 			Mallory.attack(key);
 			Mallory.printResult();					
 			
-			PrivateKey pk = Mallory.getResult();			
-			byte[] plainText = readFromFile("data/data.any");
-			RSA Alice = new RSA(pk);
-			byte[] signature = Alice.sign(plainText);
-			writeToFile("output/data.sign", signature);
+			getSignature("data/data.any", "output/data.sign", Mallory.getResult());
 		} catch (Exception e) {
 			e.getMessage();
 			e.printStackTrace();
